@@ -1,0 +1,11 @@
+{
+  "name": "clean-node-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:kleysoncastro/clean-node-api.git",
+  "author": "kleyson castro <kleysoncastro99@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "standard": "^16.0.4"
+  }
+}
