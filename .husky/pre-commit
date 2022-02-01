@@ -3,4 +3,3 @@
 
 yarn lint-staged
 yarn jest
-git add
