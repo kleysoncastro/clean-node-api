@@ -1,6 +1,17 @@
+class MissingParamError extends Error {
+  constructor (paramName) {
+    super(`Missing param: ${paramName}`)
+    this.name = 'MissingParamError'
+  }
+}
+
 class HttpResponse {
-  static badRequest () {
-    return { statusCode: 400 }
+  static badRequest (paramName) {
+    return {
+      statusCode: 400,
+      body: new MissingParamError(paramName)
+
+    }
   }
 
   static internalServerError () {
@@ -12,8 +23,11 @@ class LoginRouter {
   route (httpRequest) {
     if (!httpRequest || !httpRequest.body) return HttpResponse.internalServerError()
     const { email, password } = httpRequest.body
-    if (!email || !password) {
-      return HttpResponse.badRequest()
+    if (!email) {
+      return HttpResponse.badRequest('email')
+    }
+    if (!password) {
+      return HttpResponse.badRequest('password')
     }
   }
 }
@@ -28,6 +42,7 @@ describe('Login Router', () => {
     }
     const httpResponse = sut.route(httpRequest)
     expect(httpResponse.statusCode).toBe(400)
+    expect(httpResponse.body).toEqual(new MissingParamError('email'))
   })
 
   test('Should return 400 is no password provider', () => {
@@ -39,6 +54,7 @@ describe('Login Router', () => {
     }
     const httpResponse = sut.route(httpRequest)
     expect(httpResponse.statusCode).toBe(400)
+    expect(httpResponse.body).toEqual(new MissingParamError('password'))
   })
 
   test('Should return 500 is no httpRequest provider', () => {
