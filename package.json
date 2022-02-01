@@ -8,10 +8,17 @@
   "scripts": {
     "prepare": "husky install"
   },
+  "standard": {
+    "env": ["jest"]
+  },
   "devDependencies": {
     "husky": "^7.0.4",
     "jest": "^27.4.7",
     "lint-staged": "^12.3.2",
     "standard": "^16.0.4"
+  },
+  "dependencies": {
+    "express": "^4.17.2",
+    "mongoose": "^6.1.9"
   }
 }
