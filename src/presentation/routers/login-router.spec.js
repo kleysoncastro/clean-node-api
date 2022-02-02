@@ -73,7 +73,7 @@ describe('Login Router', () => {
     expect(authUseCase.password).toBe(httpRequest.body.password)
   })
 
-  test('Should return 401 whwn invalid credential are provider', () => {
+  test('Should return 401 when invalid credential are provider', () => {
     const { sut } = makeSut()
 
     const httpRequest = {
@@ -85,5 +85,32 @@ describe('Login Router', () => {
     const httpResponse = sut.route(httpRequest)
     expect(httpResponse.statusCode).toBe(401)
     expect(httpResponse.body).toEqual(new UnauthorazedError())
+  })
+
+  test('Should return 500 if not AuthUseCase is provider', () => {
+    const sut = new LoginRouter()
+
+    const httpRequest = {
+      body: {
+        email: 'any_email@mail.com',
+        password: 'any_password'
+      }
+    }
+    const httpResponse = sut.route(httpRequest)
+    expect(httpResponse.statusCode).toBe(500)
+  })
+
+  test('Should return 500 if not AuthUseCase has no auth method', () => {
+    class AuthUseCaseSpy {}
+    const authUseCase = new AuthUseCaseSpy()
+    const sut = new LoginRouter(authUseCase)
+    const httpRequest = {
+      body: {
+        email: 'any_email@mail.com',
+        password: 'any_password'
+      }
+    }
+    const httpResponse = sut.route(httpRequest)
+    expect(httpResponse.statusCode).toBe(500)
   })
 })
