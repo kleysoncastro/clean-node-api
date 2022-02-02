@@ -91,7 +91,7 @@ describe('Login Router', () => {
   })
 
   test('Should return 200 when valid credential are provider', () => {
-    const { sut } = makeSut()
+    const { sut, authUseCase } = makeSut()
 
     const httpRequest = {
       body: {
@@ -101,6 +101,7 @@ describe('Login Router', () => {
     }
     const httpResponse = sut.route(httpRequest)
     expect(httpResponse.statusCode).toBe(200)
+    expect(httpResponse.body.accessToken).toEqual(authUseCase.accessToken)
   })
 
   test('Should return 500 if not AuthUseCase is provider', () => {
