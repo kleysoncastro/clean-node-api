@@ -16,6 +16,12 @@ const makeEmailValidator = () => {
   return emailValidatorSpy
 }
 
+const makeEmailValidatorMethodUndefined = () => {
+  class EmailValidatorSpy {}
+
+  return new EmailValidatorSpy()
+}
+
 const makeSut = () => {
   const emailValidatorSpy = makeEmailValidator()
   const authUseCaseSpy = makeAuthUseCase()
@@ -192,4 +198,50 @@ describe('Login Router', () => {
     expect(httpResponse.statusCode).toBe(400)
     expect(httpResponse.body).toEqual(new InvalidParamError('email'))
   })
+
+  test('Should return 500 if no emailValid is provider', async () => {
+    const authUseCaseSpy = makeAuthUseCase()
+    const sut = new LoginRouter(authUseCaseSpy)
+
+    const httpRequest = {
+      body: {
+        email: 'any_email@mail.com',
+        password: 'any_password'
+      }
+    }
+    const httpResponse = await sut.route(httpRequest)
+    expect(httpResponse.statusCode).toBe(500)
+    expect(httpResponse.body).toEqual(new InternalServerError())
+  })
+
+  test('Should return 500 if no emailValidator has no isValid method', async () => {
+    const authUseCaseSpy = makeAuthUseCase()
+    const emailValidatorSpyUndefined = makeEmailValidatorMethodUndefined()
+    const sut = new LoginRouter(authUseCaseSpy, emailValidatorSpyUndefined)
+
+    const httpRequest = {
+      body: {
+        email: 'any_email@mail.com',
+        password: 'any_password'
+      }
+    }
+    const httpResponse = await sut.route(httpRequest)
+    expect(httpResponse.statusCode).toBe(500)
+    expect(httpResponse.body).toEqual(new InternalServerError())
+  })
 })
+
+/* test('Should return 400 if an invalid email is provider', async () => {
+  const authUseCaseSpy = makeAuthUseCase()
+  const emailValidatorSpy = makeEmailValidatorWithError()
+  const sut = new LoginRouter(authUseCaseSpy, emailValidatorSpy)
+
+  const httpRequest = {
+    body: {
+      email: 'invalid_email@mail.com',
+      password: 'any_password'
+    }
+  }
+  const httpResponse = await sut.route(httpRequest)
+  expect(httpResponse.statusCode).toBe(500)
+}) */
