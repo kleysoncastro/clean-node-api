@@ -8,6 +8,8 @@
   "scripts": {
     "test": "jest --watch",
     "test:ci": "jest --coverage --noStackTrace",
+    "test:unit": "jest --noStackTrace --silent -c jest-unit.config.js",
+    "test:integration": "jest --noStackTrace --silent -c  jest-integration.config.js",
     "test:staged":"jest --passWithNoTests --findRelatedTests ./src --silent --noStackTrace",
     "prepare": "husky install"
   },
