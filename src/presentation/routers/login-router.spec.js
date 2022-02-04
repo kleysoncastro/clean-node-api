@@ -239,7 +239,7 @@ describe('Login Router', () => {
     expect(httpResponse.body).toEqual(new InternalServerError())
   })
 
-  test('Should return 400 if an invalid email is provider', async () => {
+  test('Should return 500 if an invalid email is provider', async () => {
     const authUseCaseSpy = makeAuthUseCase()
     const emailValidatorSpy = makeEmailValidatorWithError()
     const sut = new LoginRouter(authUseCaseSpy, emailValidatorSpy)
