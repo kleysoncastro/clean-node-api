@@ -6,8 +6,11 @@
   "author": "kleyson castro <kleysoncastro99@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "test": "jest --watch",
+    "test:staged":"jest --passWithNoTests --findRelatedTests ./src --silent --noStackTrace",
     "prepare": "husky install"
   },
+
   "standard": {
     "env": ["jest"]
   },
