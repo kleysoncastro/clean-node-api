@@ -10,12 +10,13 @@
     "test:ci": "jest --coverage --noStackTrace",
     "test:unit": "jest --noStackTrace --silent -c jest-unit.config.js",
     "test:integration": "jest --noStackTrace --silent -c  jest-integration.config.js",
-    "test:staged":"jest --passWithNoTests --findRelatedTests ./src --silent --noStackTrace",
+    "test:staged": "jest --passWithNoTests --findRelatedTests ./src --silent --noStackTrace",
     "prepare": "husky install"
   },
-
   "standard": {
-    "env": ["jest"]
+    "env": [
+      "jest"
+    ]
   },
   "devDependencies": {
     "husky": "^7.0.4",
@@ -25,6 +26,7 @@
   },
   "dependencies": {
     "express": "^4.17.2",
-    "mongoose": "^6.1.9"
+    "mongoose": "^6.1.9",
+    "validator": "^13.7.0"
   }
 }
