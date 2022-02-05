@@ -1,8 +1,5 @@
 const LoginRouter = require('./LoginRouter')
-const MissingParamError = require('../helpers/missing-param-error')
-const UnauthorazedError = require('../helpers/unauthorazedError-error')
-const InternalServerError = require('../helpers/internal-server-error')
-const InvalidParamError = require('../helpers/invalid-param-error')
+const { MissingParamError, UnauthorazedError, InternalServerError, InvalidParamError } = require('../erros')
 
 const makeEmailValidator = () => {
   class EmailValidatorSpy {
