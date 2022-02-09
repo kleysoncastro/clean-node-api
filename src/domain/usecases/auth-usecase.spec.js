@@ -1,4 +1,4 @@
-const { MissingParamError } = require('../../utils/erros')
+const { MissingParamError, InvalidParamError } = require('../../utils/erros')
 
 class AuthUseCase {
   constructor (loadUserEmailRepository) {
@@ -11,6 +11,12 @@ class AuthUseCase {
     }
     if (!password) {
       throw new MissingParamError('password')
+    }
+    if (!this.loadUserEmailRepository) {
+      throw new MissingParamError('loadUserEmailRepository')
+    }
+    if (!this.loadUserEmailRepository.load) {
+      throw new InvalidParamError('loadUserEmailRepository')
     }
     await this.loadUserEmailRepository.load(email)
   }
@@ -32,13 +38,13 @@ const makeSut = () => {
 }
 describe('Auth useCase', () => {
   test('Should throw if no email provider', async () => {
-    const sut = new AuthUseCase()
+    const { sut } = makeSut()
     const promise = sut.auth()
     expect(promise).rejects.toThrow(new MissingParamError('email'))
   })
 
   test('Should throw if no password provider', async () => {
-    const sut = new AuthUseCase()
+    const { sut } = makeSut()
     const promise = sut.auth('any_email@mail.com')
     expect(promise).rejects.toThrow(new MissingParamError('password'))
   })
@@ -47,5 +53,20 @@ describe('Auth useCase', () => {
     const { sut, loadUserEmailRepositorySpy } = makeSut()
     await sut.auth('any_email@mail.com', 'any_password')
     expect(loadUserEmailRepositorySpy.email).toBe('any_email@mail.com')
+  })
+
+  test('Should throw if no loadUserEmailRepository is provided', async () => {
+    const sut = new AuthUseCase()
+    const promise = sut.auth('any_email@mail.com', 'any_password')
+    expect(promise).rejects.toThrow(new MissingParamError('loadUserEmailRepository'))
+  })
+
+  test('Should throw if no loadUserEmailRepository has no load method', async () => {
+    class LoadUserEmailRepositorySpy {
+
+    }
+    const sut = new AuthUseCase(LoadUserEmailRepositorySpy)
+    const promise = sut.auth('any_email@mail.com', 'any_password')
+    expect(promise).rejects.toThrow(new InvalidParamError('loadUserEmailRepository'))
   })
 })
