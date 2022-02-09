@@ -15,7 +15,21 @@ class AuthUseCase {
     await this.loadUserEmailRepository.load(email)
   }
 }
+const makeSut = () => {
+  class LoadUserEmailRepositorySpy {
+    async load (email) {
+      this.email = email
+    }
+  }
 
+  const loadUserEmailRepositorySpy = new LoadUserEmailRepositorySpy()
+
+  const sut = new AuthUseCase(loadUserEmailRepositorySpy)
+  return {
+    sut,
+    loadUserEmailRepositorySpy
+  }
+}
 describe('Auth useCase', () => {
   test('Should throw if no email provider', async () => {
     const sut = new AuthUseCase()
@@ -30,15 +44,7 @@ describe('Auth useCase', () => {
   })
 
   test('Should call LoadUserEmailRepository whith correct email', async () => {
-    class LoadUserEmailRepositorySpy {
-      async load (email) {
-        this.email = email
-      }
-    }
-
-    const loadUserEmailRepositorySpy = new LoadUserEmailRepositorySpy()
-
-    const sut = new AuthUseCase(loadUserEmailRepositorySpy)
+    const { sut, loadUserEmailRepositorySpy } = makeSut()
     await sut.auth('any_email@mail.com', 'any_password')
     expect(loadUserEmailRepositorySpy.email).toBe('any_email@mail.com')
   })
