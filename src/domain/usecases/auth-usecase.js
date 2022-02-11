@@ -14,6 +14,8 @@ class AuthUseCase {
     }
     const user = await this.loadUserEmailRepository.load(email)
     if (!user) return null
+
+    return null
   }
 }
 
