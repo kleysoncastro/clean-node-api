@@ -26,8 +26,8 @@ DA:17,8
 DA:18,3
 DA:19,3
 DA:20,3
-DA:21,3
-DA:22,3
+DA:21,8
+DA:22,8
 DA:23,1
 DA:24,1
 DA:25,1
@@ -40,8 +40,9 @@ BRDA:13,3,0,1
 BRDA:16,4,0,4
 BRDA:17,5,0,1
 BRDA:17,6,0,3
-BRF:7
-BRH:7
+BRDA:21,7,0,1
+BRF:8
+BRH:8
 end_of_record
 TN:
 SF:src/utils/erros/index.js

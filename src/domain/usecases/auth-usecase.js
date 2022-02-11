@@ -16,9 +16,9 @@ class AuthUseCase {
     const user = await this.loadUserEmailRepository.load(email)
     if (!user) return null
 
-    this.encrypter.compare(password, user.password)
+    const isValid = await this.encrypter.compare(password, user.password)
 
-    return null
+    if (!isValid) return null
   }
 }
 
