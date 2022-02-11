@@ -1,4 +1,4 @@
-const { MissingParamError, InvalidParamError } = require('../../utils/erros')
+const { MissingParamError } = require('../../utils/erros')
 
 class AuthUseCase {
   constructor (loadUserEmailRepository) {
@@ -11,12 +11,6 @@ class AuthUseCase {
     }
     if (!password) {
       throw new MissingParamError('password')
-    }
-    if (!this.loadUserEmailRepository) {
-      throw new MissingParamError('loadUserEmailRepository')
-    }
-    if (!this.loadUserEmailRepository.load) {
-      throw new InvalidParamError('loadUserEmailRepository')
     }
     const user = await this.loadUserEmailRepository.load(email)
     if (!user) return null
